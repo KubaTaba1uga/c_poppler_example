@@ -15,10 +15,11 @@ project('c_poppler_demo', 'c',
 # *    App
 # ******************************************************************************
 subdir('src')
-poppler_dep = dependency('poppler', version:'22.12.0', required: true)
-fontconfig_dep = dependency('fontconfig', required: true)
+gpoppler_dep = dependency('poppler-glib', version:'22.12.0', required: true)
+glib_dep = dependency('glib-2.0', required: true)
+gio_dep = dependency('gio-2.0',  required: true)
 
-c_poppler_demo_deps = [poppler_dep, fontconfig_dep]
+c_poppler_demo_deps = [gpoppler_dep, glib_dep, gio_dep]
 c_poppler_demo_inc = include_directories('src')
 executable('poppler_demo',
   sources,
