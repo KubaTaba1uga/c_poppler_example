@@ -4,6 +4,7 @@
 #include "poppler-document.h"
 #include "poppler-page.h"
 #include "poppler-structure-element.h"
+#include <ctype.h>
 #include <poppler.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -47,11 +48,7 @@ void higlith_word(void) {
   poppler_page_render(page, cairo);
   cairo_restore(cairo);
 
-  /* g_object_unref(page); */
-
-  cairo_set_source_rgb(cairo, 1, 0, 0);
-  cairo_rectangle(cairo, 50, 50, 40, 40); // 40×40 px
-  cairo_fill(cairo);
+  cairo_save(cairo);
   PopplerRectangle *rectangles;
   guint n_rectangles;
   bool is_done = poppler_page_get_text_layout(page, &rectangles, &n_rectangles);
@@ -60,19 +57,22 @@ void higlith_word(void) {
   }
 
   const char *page_text = poppler_page_get_text(POPPLER_PAGE(page));
+  cairo_restore(cairo);
+
   for (int i = 0; i < n_rectangles; i++) {
     PopplerRectangle rect = rectangles[i];
     char chr = page_text[i];
 
-    if (chr != ' ') {
+    if (isalnum(chr)) {
       cairo_move_to(cairo, rect.x1,
                     rect.y2); // Set cursor on one corner of gliph
       cairo_line_to(cairo, rect.x2, rect.y2);
       cairo_set_line_width(cairo, 2);
       cairo_stroke(cairo);
-      printf("c=%c, .y=%f\n", page_text[i], rectangles[i].y2);
     }
   }
+
+  g_object_unref(page);
 
   /* Then the image is painted on top of a white "page". Instead of
    * creating a second image, painting it white, then painting the
