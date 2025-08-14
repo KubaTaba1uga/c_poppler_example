@@ -41,7 +41,7 @@ void higlith_word(void) {
   poppler_page_get_size(page, &width, &height);
 
   surface = cairo_image_surface_create(
-      CAIRO_FORMAT_ARGB32, IMAGE_DPI * 600 / 72.0, IMAGE_DPI * 800 / 72.0);
+      CAIRO_FORMAT_ARGB32, IMAGE_DPI * width / 72.0, IMAGE_DPI * height / 72.0);
   cairo = cairo_create(surface);
   cairo_scale(cairo, IMAGE_DPI / 72.0, IMAGE_DPI / 72.0);
   cairo_save(cairo);
@@ -58,6 +58,7 @@ void higlith_word(void) {
 
   const char *page_text = poppler_page_get_text(POPPLER_PAGE(page));
   cairo_restore(cairo);
+  cairo_set_line_width(cairo, 1);
 
   for (int i = 0; i < n_rectangles; i++) {
     PopplerRectangle rect = rectangles[i];
@@ -67,7 +68,7 @@ void higlith_word(void) {
       cairo_move_to(cairo, rect.x1,
                     rect.y2); // Set cursor on one corner of gliph
       cairo_line_to(cairo, rect.x2, rect.y2);
-      cairo_set_line_width(cairo, 2);
+
       cairo_stroke(cairo);
     }
   }
