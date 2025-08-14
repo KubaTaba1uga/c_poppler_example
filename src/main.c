@@ -7,11 +7,20 @@
 #include <poppler.h>
 #include <stdio.h>
 
-int main(void) {
+int main(int argc, char *argv[]) {
+  if (argc < 2) {
+    printf("Usage: %s [gen|under]\n", argv[0]);
+    return 1;
+  }
 
-  /* generate_page_image(); */
-
-  higlith_word();
+  if (strcmp(argv[1], "gen") == 0) {
+    generate_page_image();
+  } else if (strcmp(argv[1], "under") == 0) {
+    higlith_word();
+  } else {
+    printf("Unknown command: %s\n", argv[1]);
+    return 1;
+  }
 
   return 0;
 }
