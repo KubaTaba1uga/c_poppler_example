@@ -66,9 +66,9 @@ void higlith_word(void) {
 
     if (chr != ' ') {
       cairo_move_to(cairo, rect.x1,
-                    rect.y1); // Set cursor on one corner of gliph
-      cairo_line_to(cairo, rect.x2, rect.y1);
-      cairo_set_line_width(cairo, 20);
+                    rect.y2); // Set cursor on one corner of gliph
+      cairo_line_to(cairo, rect.x2, rect.y2);
+      cairo_set_line_width(cairo, 2);
       cairo_stroke(cairo);
       printf("c=%c, .y=%f\n", page_text[i], rectangles[i].y2);
     }
